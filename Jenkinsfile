@@ -10,16 +10,16 @@ pipeline {
         }
         stage('Build & Tag') {
             steps {
-                sh "docker build -t ${DOCKER_USER}/${ROLL_NO}_frontend ./frontend"
-                sh "docker build -t ${DOCKER_USER}/${ROLL_NO}_backend ./backend"
+                sh "docker build -t ${DOCKER_USER}/${ROLL_NO}-frontend ./frontend"
+                sh "docker build -t ${DOCKER_USER}/${ROLL_NO}-backend ./backend"
             }
         }
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
-                    sh "docker push ${DOCKER_USER}/${ROLL_NO}_frontend"
-                    sh "docker push ${DOCKER_USER}/${ROLL_NO}_backend"
+                    sh "docker push ${DOCKER_USER}/${ROLL_NO}-frontend"
+                    sh "docker push ${DOCKER_USER}/${ROLL_NO}-backend"
                 }
             }
         }
